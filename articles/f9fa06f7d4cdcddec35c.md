@@ -29,7 +29,7 @@ CREATE TABLE user(
 テーブルにレコードを追加するときに使う。
 
 ```sql
-INSERT INTO user(name, gender)
+INSERT INTO users(name, gender)
 VALUES(its, male);
 ```
 
@@ -51,7 +51,7 @@ VALUES(its, male);
 
 ```sql
 SELECT *
-FROM user;
+FROM users;
 ```
 
 | id   | name | gender |
@@ -64,7 +64,7 @@ FROM user;
 
 ```sql
 SELECT name
-FROM user;
+FROM users;
 ```
 
 | name |
@@ -77,7 +77,7 @@ FROM user;
 
 ```sql
 SELECT name,gender
-FROM user;
+FROM users;
 ```
 
 | name | gender |
@@ -112,7 +112,7 @@ WHERE name = its;
 DELETE同様にWhereを用いて条件をつけることができる。
 
 ```sql
-UPDATE user
+UPDATE users
 SET gender = 'female'
 WHERE name = 'yamada';
 ```
@@ -125,8 +125,8 @@ WHERE name = 'yamada';
 # AS
 データを取得する際に、カラム名(テーブル名も)を別名をつけることができる。
 ```sql
-SELECT name as　名前, gender as　性別,
-FROM user
+SELECT name as　`名前`, gender as　`性別`,
+FROM users
 ```
 
 | 名前 | 性別 |
@@ -138,9 +138,9 @@ FROM user
 `EXISTS`はサブクエリが返す値をbooleanで返し、trueの時にメインクエリを実行する。
 ここではuserテーブルのnameにyamadaが存在していたらuserテーブルを返すという処理をしている。
 ```sql
-SELECT * FROM user
+SELECT * FROM users
 WHERE EXISTS
-(SELECT * FROM user
+(SELECT * FROM users
 WHERE name = 'yamada');
 ```
 
@@ -160,7 +160,7 @@ WHERE name = 'yamada');
 
 ```sql
 SELECT distinct name
-FROM user
+FROM users
 ```
 
 | name |
@@ -174,7 +174,7 @@ FROM user
 
 ```sql
 SELECT *
-FROM user
+FROM users
 ORDER BY　id DESC;
 ```
 | id   | name | gender |
@@ -187,7 +187,7 @@ ORDER BY　id DESC;
 
 ```sql
 SELECT COUNT(*)
-FROM user
+FROM users
 -- 2
 ```
 
@@ -209,7 +209,7 @@ FROM user
 
 ```sql
 SELECT COUNT(*) as count
-FROM user GROUP BY gender
+FROM users GROUP BY gender
 ```
 | gender | count |
 | ---- | ---- |
