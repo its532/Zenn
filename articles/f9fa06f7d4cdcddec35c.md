@@ -1,5 +1,5 @@
 ---
-title: "sql基本の基本"
+title: "sql基本"
 emoji: "🐈"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [sql, datebase]
@@ -12,9 +12,9 @@ published: false
 | id   | name | gender |
 | ---- | ---- | ---- |
 | 1    | yamada | male |
-| 2    | tarou | female |
+| 2    | hanako | female |
 
-このようなテーブルを作りたいとして、以下のようなsqlを書く。
+このようなテーブルを作りたいとして、以下のsqlを書く。
 
 ```sql
 CREATE TABLE user(
@@ -37,7 +37,7 @@ VALUES(its, male);
 | id   | name | gender |
 | ---- | ---- | ---- |
 | 1    | yamada | male |
-| 2    | tarou | female |
+| 2    | hanako | female |
 | 3    | its | male |
 
 # SELECT
@@ -57,7 +57,7 @@ FROM user;
 | id   | name | gender |
 | ---- | ---- | ---- |
 | 1    | yamada | male |
-| 2    | tarou | female |
+| 2    | hanako | female |
 | 3    | its | male |
 
 ## テーブルのカラムで指定
@@ -70,7 +70,7 @@ FROM user;
 | name |
 | ---- |
 | yamada |
-| tarou |
+| hanako |
 | its |
 
 ## テーブルの複数カラムで指定
@@ -83,7 +83,7 @@ FROM user;
 | name | gender |
 | ---- | ---- |
 | yamada | male |
-| tarou | female |
+| hanako | female |
 | its | male |
 
 # DELETE
@@ -104,7 +104,7 @@ WHERE name = its;
 | id   | name | gender |
 | ---- | ---- | ---- |
 | 1    | yamada | male |
-| 2    | tarou | female |
+| 2    | hanako | female |
 
 
 # UPDATE
@@ -120,7 +120,53 @@ WHERE name = 'yamada';
 | id   | name | gender |
 | ---- | ---- | ---- |
 | 1    | yamada | female |
-| 2    | tarou | female |
+| 2    | hanako | female |
+
+# AS
+データを取得する際に、カラム名(テーブル名も)を別名をつけることができる。
+```sql
+SELECT name as　名前, gender as　性別,
+FROM user
+```
+
+| 名前 | 性別 |
+| ---- | ---- |
+| yamada | male |
+| hanako | female |
+
+# EXISTS
+`EXISTS`はサブクエリが返す値をbooleanで返し、trueの時にメインクエリを実行する。
+ここではuserテーブルのnameにyamadaが存在していたらuserテーブルを返すという処理をしている。
+```sql
+SELECT * FROM user
+WHERE EXISTS
+(SELECT * FROM user
+WHERE name = 'yamada');
+```
+
+| id   | name | gender |
+| ---- | ---- | ---- |
+| 1    | yamada | male |
+| 2    | hanako | female |
+
+# DISTINCT
+重複したデータを取り除いて、データを取得することができる。
+同じ名前の人が二人いるとして
+| id   | name | gender |
+| ---- | ---- | ---- |
+| 1    | yamada | male |
+| 2    | hanako | female |
+| 3    | hanako | female |
+
+```sql
+SELECT distinct name
+FROM user
+```
+
+| name |
+| ---- |
+| yamada |
+| hanako |
 
 # ORDER BY
 データを並び替える時に使う。
@@ -133,5 +179,39 @@ ORDER BY　id DESC;
 ```
 | id   | name | gender |
 | ---- | ---- | ---- |
-| 2    | tarou | female |
+| 2    | hanako | female |
 | 1    | yamada | female |
+
+# COUNT
+`COUNT`はレコード数を取得する。
+
+```sql
+SELECT COUNT(*)
+FROM user
+-- 2
+```
+
+| id   | name | gender |
+| ---- | ---- | ---- |
+| 1    | yamada | male |
+| 2    | hanako | female |
+
+
+# GROUP BY
+指定したカラムの値を基準にデータをグループ化し、集計関数を用いて複数のデータをまとめて計算することができる。
+
+| id   | name | gender |
+| ---- | ---- | ---- |
+| 1    | yamada | male |
+| 2    | hanako | female |
+| 3    | its | male |
+
+
+```sql
+SELECT COUNT(*) as count
+FROM user GROUP BY gender
+```
+| gender | count |
+| ---- | ---- |
+| male |  2  |
+| female |  1  |
